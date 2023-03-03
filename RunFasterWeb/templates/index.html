@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/static/images/xz.ico">
+
+    <title>xxx</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-2.0.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">天蓬自动化</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="main">
+
+            <div class="row placeholders">
+                <div class="col-xs-6 col-sm-2 placeholder">
+                    <h4></h4>
+                    <button type="button" class="btn btn-primary" onclick="runKey()">Prerelease</button>
+                    <br>
+                    <span class="text-muted">运行核心用例</span>
+                </div>
+                <div class="col-xs-6 col-sm-2 placeholder">
+                    <h4></h4>
+                    <button type="button" class="btn btn-primary" onclick="runAll()">Online</button>
+                    <br>
+                    <span class="text-muted">运行全用例</span>
+                </div>
+                <div class="col-xs-6 col-sm-2 placeholder">
+                    <h4></h4>
+                    <button type="button" class="btn btn-primary" onclick="runMonitor()">Monitor</button>
+                    <br>
+                    <span class="text-muted">启动监控</span>
+                </div>
+                <div class="col-xs-6 col-sm-2 placeholder">
+                    <h4></h4>
+                    <button type="button" class="btn btn-primary" onclick="stopMonitor()">Stop</button>
+                    <br>
+                    <span class="text-muted">关闭监控</span>
+                </div>
+                <div class="col-xs-6 col-sm-3 placeholder">
+                    <h4></h4>
+                    <br>
+                    <span class="text-muted"></span>
+                </div>
+            </div>
+
+            <p>
+
+            </p>
+            <h2 class="sub-header">用例执行列表</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>用例ID</th>
+                        <th>用例名</th>
+                        <th>核心用例</th>
+                        <th>执行结果</th>
+                        <th>运行</th>
+                        <th>查看报告</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for case_index in cases %}
+                        {% if case_index.run_result == 1 %}
+                            <tr class="table-success">
+                                <td>{{ case_index.run_id }}</td>
+                                <td>{{ case_index.case_name }}</td>
+                                <td>{{ case_index.run_main }}</td>
+                                <td>{{ case_index.run_result }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-success"
+                                            onclick="runCaseOne({{ case_index.run_id }})">立即执行
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="reviewReport({{ case_index.run_id }})">查看报告
+                                    </button>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr class="table-danger">
+                                <td>{{ case_index.run_id }}</td>
+                                <td>{{ case_index.case_name }}</td>
+                                <td>{{ case_index.run_main }}</td>
+                                <td>{{ case_index.run_result }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger"
+                                            onclick="runCaseOne({{ case_index.run_id }})">立即执行
+                                    </button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="reviewReport({{ case_index.run_id }})">查看报告
+                                    </button>
+                                </td>
+                            </tr>
+
+                        {% endif %}
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function runCaseOne(run_id) {
+        window.alert("开始执行：http://auto.com/runCaseOne/" + run_id + "/");
+        $.get("runCaseOne/" + run_id + "/", function (data) {
+            alert("用例运行完成");
+            document.location.reload()
+        });
+    }
+
+    function runKey() {
+        window.alert("开始执行：http://auto.com/runCaseKeyPre/");
+        $.get("runCaseKeyPre/", function (data) {
+            alert("用例运行完成");
+            document.location.reload()
+        });
+    }
+
+    function runAll() {
+        window.alert("开始执行：http://auto.com/runCaseAll/");
+        $.get("runCaseAll/", function (data) {
+            alert("用例运行完成");
+            document.location.reload()
+        });
+    }
+
+    function runMonitor() {
+        window.alert("开始执行：http://auto.com/runMonitor/");
+        $.get("runMonitor/", function (data) {
+            alert("监控开启成功");
+            document.location.reload()
+        });
+    }
+
+    function stopMonitor() {
+        window.alert("开始执行：http://auto.com/stopMonitor/");
+        $.get("stopMonitor/", function (data) {
+            alert("监控已关闭");
+            document.location.reload()
+        });
+    }
+
+    function reviewReport(run_id) {
+        {#window.open("http://auto.com:9001/index/reviewReport/" + run_id + '/');#}
+        window.open("http://auto.com/index/reviewReport/" + run_id + '/');
+    }
+</script>
+
+</body>
+</html>
