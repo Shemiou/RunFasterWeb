@@ -1,1 +1,2 @@
 # RunFasterWeb
+使用Playwright实现的WebUI自动化框架
